@@ -1,0 +1,111 @@
+---
+title: "Advanced Bioinformatics 2023 assessment"
+author: "M2108132"
+date: "2023-04-15"
+output: html_document
+---
+Question 3.1 Using the sum() function and : operator, write an expression in the code snippet to evaluate the sum of all integers between 5 and 55. 
+
+
+```{r}
+a <-seq(5,55,1)
+sum(a)
+```
+Alternatively, the following code can also be used.
+```{r}
+sum(5:55)
+```
+Question 3.2. Write a function called sumfun with one input parameter, called n, that calculates the sum of all integers between 5 and n. Use the function to do the calculation for n = 10, n = 20, and n = 100 and present the results.
+
+```{r}
+sumfun <- function(n) {sum(5:n)}
+sumfun (10)
+```
+```{r}
+sumfun <- function(n) {sum(5:n)}
+sumfun (20)
+```
+```{r}
+sumfun <- function(n) {sum(5:n)}
+sumfun (100)
+```
+Question 3.3. The famous Fibonacci series is calculated as the sum of the two preceding members of the sequence, where the first two steps in the sequence are 1, 1. Write an R script using a for loop to calculate and print out the first 12 entries of the Fibonacci series.
+
+```{r}
+n <- 12
+fib <- numeric(n)
+fib[1] <- 1
+fib[2] <- 1
+for (i in 3:n){fib[i] <-fib[i-1]+fib[i-2]}
+print(fib)
+```
+Question 3.4. With the mtcars dataset bundled with R, use ggplot to generate a box of miles per gallon (in the variable mpg) as a function of the number of gears (in the variable gear). Use the fill aesthetic to colour bars by number of gears.
+
+
+```{r}
+boxplot(mtcars$mpg ~ mtcars$gear, main = "Box Plot of mpg vs gear", xlab = "gear", ylab = "mpg", col="lightblue")
+```
+```{r}
+boxplot(mtcars$mpg ~ mtcars$gear, main = "Box Plot of mpg vs gear", xlab = "gear", ylab = "mpg", col=c("lightblue","red","green"))
+```
+
+Question 3.5 Using the cars dataset and the function lm, fit a linear relationship between speed and breaking distance in the variable distance. What are the fitted slope and intercept of the line, and their standard errors? What are the units used for the variables in the dataset? 
+
+```{r}
+mod = lm(formula = dist ~ speed, data = cars)
+mod
+summary(mod)
+
+```
+
+
+
+Question 3.6 Use ggplot to plot the data points from Task 6 and the linear fit
+
+```{r}
+ggplot(cars, aes(x=speed, y=dist)) +  geom_point() + geom_smooth(method="lm")
+```
+
+
+
+
+Question 3.7 Again using the cars dataset, now use linear regression (lm) to estimate the average reaction time for the driver to start breaking (in seconds). To simplify matters you may assume that once breaking commences, breaking distance is proportional to the square of the speed. Explain the steps in your analysis. Do you get reasonable results? Finally, use ggplot to plot the data points and the fitted relationship.
+
+
+```{r}
+mod1 = lm(formula = dist ~ speed + I(speed^2), data = cars)
+mod1
+```
+
+conversion of speed from mph to feet/sec and subsequent generation of second model (mod2) followed by summary of the model
+```{r}
+cars$speed.feetsec <- (cars$speed/3600)*5280
+mod2 <- lm(dist ~ 0 + speed.feetsec + I(speed.feetsec^2), data=cars)
+summary(mod2)
+```
+ggplot
+
+```{r}
+ggplot(cars, aes(x=speed.feetsec, y=dist)) +  geom_point() + geom_smooth(method="lm", formula = "y ~ 0 + x + I(x^2)")
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
